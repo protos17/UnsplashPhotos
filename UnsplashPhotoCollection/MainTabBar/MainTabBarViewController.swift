@@ -8,11 +8,13 @@
 import UIKit
 
 final class MainTabBarViewController: UITabBarController {
+    // MARK: - UIViewController
     override func viewDidLoad() {
         super.viewDidLoad()
         generateTabBar()
     }
     
+    // MARK: - Private methods
     private func generateTabBar() {
         tabBar.backgroundColor = .lightGray
         viewControllers = [

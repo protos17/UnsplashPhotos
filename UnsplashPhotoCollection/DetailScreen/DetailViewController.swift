@@ -6,9 +6,16 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 import Kingfisher
 
 final class DetailViewController: UIViewController {
+    // MARK: - Private Properties
+    private var viewModel = DetailViewModel()
+    private let disposeBag = DisposeBag()
+    
+    // MARK: - UI elements
     lazy var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
@@ -54,11 +61,38 @@ final class DetailViewController: UIViewController {
         return label
     }()
     
+    lazy var favouriteButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(systemName: "heart"), for: .normal)
+        button.tintColor = .red
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    // MARK: - UIViewController
     override func viewDidLoad() {
         super.viewDidLoad()
         addViews()
+        subscribe()
     }
     
+    // MARK: - Public methods
+    func configure(with model: PhotoModel) {
+        viewModel.modelPublisher.accept(model)
+        imageView.kf.indicatorType = .activity
+        if let imageString = model.urls.small {
+            let imageURL = URL(string: imageString)
+            imageView.kf.setImage(with: imageURL)
+        }
+        DispatchQueue.main.async {
+            self.nameLabel.text = "Author name: \(model.user.name ?? "unknown")"
+            self.dateLabel.text = "Photo created: \(model.createdAt ?? "unknown")"
+            self.locationLabel.text = "Author location: \(model.user.location ?? "unknown")"
+            self.downloadCountLabel.text = "Photo downloads: \(model.downloads ?? 0)"
+        }
+    }
+    
+    // MARK: - Private methods
     private func addViews() {
         view.backgroundColor = .black
         
@@ -107,20 +141,31 @@ final class DetailViewController: UIViewController {
             downloadCountLabel.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
             downloadCountLabel.heightAnchor.constraint(equalToConstant: 20)
         ])
+        
+        stackView.addSubview(favouriteButton)
+        NSLayoutConstraint.activate([
+            favouriteButton.topAnchor.constraint(equalTo: imageView.topAnchor, constant: 20),
+            favouriteButton.trailingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: -20)
+        ])
     }
     
-    func configure(with model: PhotoModel) {
-        print(model)
-        imageView.kf.indicatorType = .activity
-        if let imageString = model.urls.small {
-            let imageURL = URL(string: imageString)
-            imageView.kf.setImage(with: imageURL)
-        }
-        DispatchQueue.main.async {
-            self.nameLabel.text = "Author name: \(model.user.name ?? "unknown")"
-            self.dateLabel.text = "Photo created: \(model.createdAt ?? "unknown")"
-            self.locationLabel.text = "Author location: \(model.user.location ?? "unknown")"
-            self.downloadCountLabel.text = "Photo downloads: \(model.downloads ?? 0)"
-        }
+    private func subscribe() {
+        favouriteButton
+            .rx
+            .tap
+            .bind { [weak self] _ in
+                self?.viewModel.saveOrDeleteModel()
+            }
+            .disposed(by: disposeBag)
+        
+        viewModel.isSavedPublisher
+            .subscribe(onNext: { [weak self] isSaved in
+                if isSaved {
+                    self?.favouriteButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+                } else {
+                    self?.favouriteButton.setImage(UIImage(systemName: "heart"), for: .normal)
+                }
+            })
+            .disposed(by: disposeBag)
     }
 }

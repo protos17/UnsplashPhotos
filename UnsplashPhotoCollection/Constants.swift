@@ -10,6 +10,6 @@ import Foundation
 struct Constants {
     static let accessKey = "xOyUWV3bHHBDNJ_OrG8H3xVo9YEg-HP3u2tBkuJHOno"
     static let unsplashURL = "https://api.unsplash.com/"
-    static let randomPhotoPath = "photos/random?count=10"
-    static let searchedPhotoPath = "search/photos?per_page=10&query="
+    static let randomPhotoPath = "photos/random?count=30"
+    static let searchedPhotoPath = "search/photos?per_page=30&query="
 }

@@ -10,6 +10,7 @@ import RxSwift
 import RxRelay
 
 final class MainViewController: UIViewController {
+    // MARK: - Private properties
     private let disposeBag = DisposeBag()
     private let viewModel = MainCollectionViewModel()
     private let sectionInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
@@ -17,6 +18,7 @@ final class MainViewController: UIViewController {
     private var collectionView: UICollectionView!
     private var cellId = "collectionCellId"
     
+    // MARK: - UI elements
     lazy var titleLabel: UILabel = {
         let titleLabel = UILabel()
         titleLabel.text = "Main"
@@ -48,6 +50,7 @@ final class MainViewController: UIViewController {
         return stackView
     }()
 
+    // MARK: - UIViewController
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -55,6 +58,7 @@ final class MainViewController: UIViewController {
         subscribe()
     }
     
+    // MARK: - Private methods
     private func configure() {
         stackView.addSubview(titleLabel)
         NSLayoutConstraint.activate([
@@ -100,7 +104,7 @@ final class MainViewController: UIViewController {
         collectionView.register(MainCollectionCell.self, forCellWithReuseIdentifier: cellId)
         collectionView.backgroundColor = UIColor.white
         self.view.addSubview(collectionView)
-//        viewModel.getRequest()
+        viewModel.getRequest()
         viewModel.photoArray
             .bind(onNext: { [collectionView] _ in
                 collectionView?.reloadData()
@@ -134,6 +138,7 @@ final class MainViewController: UIViewController {
     }
 }
 
+// MARK: - UITextFieldDelegate
 extension MainViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
@@ -141,6 +146,7 @@ extension MainViewController: UITextFieldDelegate {
     }
 }
 
+// MARK: - UICollectionViewDataSource
 extension MainViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.photoArray.value.count
@@ -155,6 +161,7 @@ extension MainViewController: UICollectionViewDataSource {
     }
 }
 
+// MARK: - UICollectionViewDelegate
 extension MainViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let detailVC = DetailViewController()
@@ -163,6 +170,7 @@ extension MainViewController: UICollectionViewDelegate {
     }
 }
 
+// MARK: - UICollectionViewDelegateFlowLayout
 extension MainViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let paddingWidth = sectionInsets.left * (itemsPerRow + 1)

@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		4E998D249AA7B12B00D65246 /* Pods_UnsplashPhotoCollection.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4DBC42DA633B4F95AC95DC /* Pods_UnsplashPhotoCollection.framework */; };
 		5B472A6628644A6D004942FB /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B472A6528644A6D004942FB /* DetailViewController.swift */; };
+		5B472A6A28647DF3004942FB /* FavouriteModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5B472A6828647DF3004942FB /* FavouriteModel.xcdatamodeld */; };
+		5B472A6C28647E9E004942FB /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B472A6B28647E9E004942FB /* DataService.swift */; };
+		5B472A6E2864946F004942FB /* DetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B472A6D2864946F004942FB /* DetailViewModel.swift */; };
 		5B6BC4D428630373001A5F2A /* MainCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6BC4D328630373001A5F2A /* MainCollectionCell.swift */; };
 		5B6BC4D628630491001A5F2A /* MainCollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6BC4D528630491001A5F2A /* MainCollectionViewModel.swift */; };
 		5B7A97EA286255A100ED019D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B7A97E9286255A100ED019D /* AppDelegate.swift */; };
@@ -29,6 +32,9 @@
 		018E5E52B508F9B5CB911FCC /* Pods-UnsplashPhotoCollection.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnsplashPhotoCollection.debug.xcconfig"; path = "Target Support Files/Pods-UnsplashPhotoCollection/Pods-UnsplashPhotoCollection.debug.xcconfig"; sourceTree = "<group>"; };
 		4D4DBC42DA633B4F95AC95DC /* Pods_UnsplashPhotoCollection.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UnsplashPhotoCollection.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B472A6528644A6D004942FB /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		5B472A6928647DF3004942FB /* PhotoModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PhotoModel.xcdatamodel; sourceTree = "<group>"; };
+		5B472A6B28647E9E004942FB /* DataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataService.swift; sourceTree = "<group>"; };
+		5B472A6D2864946F004942FB /* DetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewModel.swift; sourceTree = "<group>"; };
 		5B6BC4D328630373001A5F2A /* MainCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCollectionCell.swift; sourceTree = "<group>"; };
 		5B6BC4D528630491001A5F2A /* MainCollectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCollectionViewModel.swift; sourceTree = "<group>"; };
 		5B7A97E6286255A100ED019D /* UnsplashPhotoCollection.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UnsplashPhotoCollection.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -72,8 +78,17 @@
 			isa = PBXGroup;
 			children = (
 				5B472A6528644A6D004942FB /* DetailViewController.swift */,
+				5B472A6D2864946F004942FB /* DetailViewModel.swift */,
 			);
 			path = DetailScreen;
+			sourceTree = "<group>";
+		};
+		5B472A6F2864B461004942FB /* MainTabBar */ = {
+			isa = PBXGroup;
+			children = (
+				5B7A97ED286255A100ED019D /* MainTabBarViewController.swift */,
+			);
+			path = MainTabBar;
 			sourceTree = "<group>";
 		};
 		5B6BC4CE286302F4001A5F2A /* MainScreen */ = {
@@ -108,6 +123,8 @@
 			isa = PBXGroup;
 			children = (
 				5B7A980728625FE200ED019D /* NetworkService.swift */,
+				5B472A6B28647E9E004942FB /* DataService.swift */,
+				5B472A6828647DF3004942FB /* FavouriteModel.xcdatamodeld */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -143,7 +160,7 @@
 			children = (
 				5B7A97E9286255A100ED019D /* AppDelegate.swift */,
 				5B7A97EB286255A100ED019D /* SceneDelegate.swift */,
-				5B7A97ED286255A100ED019D /* MainTabBarViewController.swift */,
+				5B472A6F2864B461004942FB /* MainTabBar */,
 				5B6BC4CE286302F4001A5F2A /* MainScreen */,
 				5B6BC4CF286302FC001A5F2A /* FavouriteScreen */,
 				5B472A6728644A74004942FB /* DetailScreen */,
@@ -281,11 +298,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				5B7A97EE286255A100ED019D /* MainTabBarViewController.swift in Sources */,
+				5B472A6C28647E9E004942FB /* DataService.swift in Sources */,
 				5B7A97EA286255A100ED019D /* AppDelegate.swift in Sources */,
 				5B7A980828625FE200ED019D /* NetworkService.swift in Sources */,
 				5B6BC4D628630491001A5F2A /* MainCollectionViewModel.swift in Sources */,
 				5B7A97EC286255A100ED019D /* SceneDelegate.swift in Sources */,
 				5B6BC4D428630373001A5F2A /* MainCollectionCell.swift in Sources */,
+				5B472A6A28647DF3004942FB /* FavouriteModel.xcdatamodeld in Sources */,
 				5B7A98002862580000ED019D /* FavouriteViewController.swift in Sources */,
 				5BDAFABB2863B686006EF28F /* FavouriteTableViewCell.swift in Sources */,
 				5B472A6628644A6D004942FB /* DetailViewController.swift in Sources */,
@@ -293,6 +312,7 @@
 				5BDAFAB92863B477006EF28F /* FavouriteScreenViewModel.swift in Sources */,
 				5B7A97FE2862576E00ED019D /* MainViewController.swift in Sources */,
 				5B7A980228625B0200ED019D /* Constants.swift in Sources */,
+				5B472A6E2864946F004942FB /* DetailViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -506,6 +526,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		5B472A6828647DF3004942FB /* FavouriteModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				5B472A6928647DF3004942FB /* PhotoModel.xcdatamodel */,
+			);
+			currentVersion = 5B472A6928647DF3004942FB /* PhotoModel.xcdatamodel */;
+			path = FavouriteModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 5B7A97DE286255A100ED019D /* Project object */;
 }

@@ -10,6 +10,7 @@ import RxSwift
 import Kingfisher
 
 final class MainCollectionCell: UICollectionViewCell {
+    // MARK: - UI elements
     lazy var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
@@ -18,7 +19,8 @@ final class MainCollectionCell: UICollectionViewCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
-        
+    
+    // MARK: - Initializers
     override init(frame: CGRect) {
         super.init(frame: frame)
         addViews()
@@ -28,6 +30,16 @@ final class MainCollectionCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Public methods
+    func configureCell(with model: PhotoModel) {
+        imageView.kf.indicatorType = .activity
+        if let imageString = model.urls.small {
+            let imageURL = URL(string: imageString)
+            imageView.kf.setImage(with: imageURL)
+        }
+    }
+    
+    // MARK: - Private methods
     private func addViews() {
         addSubview(imageView)
         NSLayoutConstraint.activate([
@@ -36,13 +48,5 @@ final class MainCollectionCell: UICollectionViewCell {
             imageView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             imageView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
-    }
-    
-    func configureCell(with model: PhotoModel) {
-        imageView.kf.indicatorType = .activity
-        if let imageString = model.urls.small {
-            let imageURL = URL(string: imageString)
-            imageView.kf.setImage(with: imageURL)
-        }
     }
 }

@@ -10,11 +10,14 @@ import RxSwift
 import RxRelay
 
 final class MainCollectionViewModel {
+    // MARK: - Public Properties
     var photoArray = BehaviorRelay<PhotoArray>(value: .init())
-
+    
+    // MARK: - Private Properties
     private var networkService = NetworkService()
     private let disposeBag = DisposeBag()
     
+    // MARK: - Public methods
     func searchPhoto(with text: String) {
         networkService.getSearchPhoto(text: text)?
             .observe(on: MainScheduler.instance)

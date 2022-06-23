@@ -9,6 +9,7 @@ import UIKit
 import Kingfisher
 
 final class FavouriteTableViewCell: UITableViewCell {
+    // MARK: - UI elements
     lazy var stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
@@ -31,6 +32,7 @@ final class FavouriteTableViewCell: UITableViewCell {
         return label
     }()
     
+    // MARK: - Initializers
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         addViews()
@@ -40,6 +42,20 @@ final class FavouriteTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Public methods
+    func configure(with model: FavouriteModel) {
+        selectionStyle = .none
+        photoView.kf.indicatorType = .activity
+        if let imageString = model.imageUrl {
+            let imageURL = URL(string: imageString)
+            photoView.kf.setImage(with: imageURL)
+        }
+        DispatchQueue.main.async {
+            self.nameLabel.text = "Author name: \(model.userName ?? "unknown")"
+        }
+    }
+    
+    // MARK: - Private methods
     private func addViews() {
         addSubview(stackView)
         NSLayoutConstraint.activate([
@@ -62,17 +78,5 @@ final class FavouriteTableViewCell: UITableViewCell {
             nameLabel.leadingAnchor.constraint(equalTo: photoView.trailingAnchor, constant: 10),
             nameLabel.trailingAnchor.constraint(equalTo: stackView.trailingAnchor)
         ])
-    }
-    
-    func configure(with model: PhotoModel) {
-        selectionStyle = .none
-        photoView.kf.indicatorType = .activity
-        if let imageString = model.urls.small {
-            let imageURL = URL(string: imageString)
-            photoView.kf.setImage(with: imageURL)
-        }
-        DispatchQueue.main.async {
-            self.nameLabel.text = "Author name: \(model.user.name ?? "unknown")"
-        }
     }
 }

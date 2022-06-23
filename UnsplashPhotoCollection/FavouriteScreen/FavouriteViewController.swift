@@ -8,9 +8,11 @@
 import UIKit
 
 final class FavouriteViewController: UIViewController {
+    // MARK: - Private properties
     private let cellId = "tableCellId"
-    let photoModel = PhotoModel(id: "", createdAt: "", urls: UrlModel(small: "https://images.unsplash.com/photo-1655726057022-3ac25fb84866?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzMzk5ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE2NTU5NzI3MjM&ixlib=rb-1.2.1&q=80&w=400"), user: User(name: "DANIL", location: ""), downloads: 0)
-
+    private let viewModel = FavouriteScreenViewModel()
+    
+    // MARK: - UI elements
     lazy var titleLabel: UILabel = {
         let titleLabel = UILabel()
         titleLabel.text = "Favourite"
@@ -29,11 +31,14 @@ final class FavouriteViewController: UIViewController {
         return tableView
     }()
     
+    // MARK: - UIViewController
     override func viewDidLoad() {
         super.viewDidLoad()
         addViews()
+        subscribe()
     }
     
+    // MARK: - Private methods
     private func addViews() {
         view.backgroundColor = .white
         view.addSubview(titleLabel)
@@ -52,28 +57,50 @@ final class FavouriteViewController: UIViewController {
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
+    
+    private func subscribe() {
+        viewModel.fetchPublisher
+            .subscribe { [weak self] _ in
+                self?.tableView.reloadData()
+            }
+            .disposed(by: viewModel.disposeBag)
+    }
 }
 
+// MARK: - UITableViewDelegate
 extension FavouriteViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let detailVC = DetailViewController()
-        detailVC.configure(with: photoModel)
+        guard let savedModel = viewModel.controller?.object(at: indexPath) else {
+            assertionFailure("Attempt to configure cell without a managed object")
+            return
+        }
+        let model = viewModel.changeToPhotoModel(savedModel)
+        detailVC.configure(with: model)
         self.present(detailVC, animated: true)
     }
 }
 
+// MARK: - UITableViewDataSource
 extension FavouriteViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        guard let sections = viewModel.controller?.sections else {
+            assertionFailure("No sections in fetchedResultsController")
+            return 0
+        }
+        let sectionInfo = sections[section]
+        return sectionInfo.numberOfObjects
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as? FavouriteTableViewCell else {
-           return FavouriteTableViewCell()
+            return FavouriteTableViewCell()
+        }
+        guard let photoModel = viewModel.controller?.object(at: indexPath) else {
+            assertionFailure("Attempt to configure cell without a managed object")
+            return FavouriteTableViewCell()
         }
         cell.configure(with: photoModel)
         return cell
     }
-    
-    
 }

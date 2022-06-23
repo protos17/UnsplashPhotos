@@ -10,11 +10,6 @@ import RxSwift
 import RxCocoa
 
 final class NetworkService {
-    private enum Error: Swift.Error {
-        case invalidResponse(URLResponse?)
-        case invalidJSON(Swift.Error)
-    }
-
     func getRandomPhotoArray() -> Observable<PhotoArray>? {
         guard let url = URL(string: Constants.unsplashURL + Constants.randomPhotoPath) else { return nil }
         var request = URLRequest(url: url)
@@ -65,5 +60,10 @@ final class NetworkService {
             }
             .subscribe(on: ConcurrentDispatchQueueScheduler(qos: .background))
             .asObservable()
+    }
+    
+    private enum Error: Swift.Error {
+        case invalidResponse(URLResponse?)
+        case invalidJSON(Swift.Error)
     }
 }
